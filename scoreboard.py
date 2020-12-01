@@ -17,11 +17,8 @@ class Scoreboard():
         self.text_color = (255, 0, 100)
         self.font = pygame.font.SysFont(None, 48)
 
-        # Prepare the initial score image.
-        self.prep_score()
-        self.prep_high_score()
-        self.prep_level()
-        self.prep_ships()
+        # Prepare images that keep track of score, level, high score, and ships.
+        self.prep_images()
 
     def prep_score(self):
         '''Turn the score into a rendered image.'''
@@ -47,9 +44,6 @@ class Scoreboard():
         self.high_score_rect.centerx = self.screen_rect.centerx
         self.high_score_rect.top = self.score_rect.top
 
-
-
-
     def prep_level(self):
         '''Turn the level into a rendered image.'''
         self.level_image = self.font.render(str(self.stats.level), True,
@@ -68,6 +62,15 @@ class Scoreboard():
             ship.rect.x = 10 + ship_number * ship.rect.width
             ship.rect.y = 10
             self.ships.add(ship)
+
+    def prep_images(self):
+        '''Show the score as a rendered image, show how many ships (trys) are
+        left, show the level number as a rendered image, show the high score as
+        a rendered image.'''
+        self.prep_score()
+        self.prep_ships()
+        self.prep_level()
+        self.prep_high_score()
 
     def show_score(self):
         '''Draw score to the screen.'''

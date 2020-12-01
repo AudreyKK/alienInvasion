@@ -34,10 +34,7 @@ def start_game(ai_settings, screen, stats, sb, ship, aliens, bullets):
     stats.game_active = True
 
     # Reset the scoreboard images.
-    sb.prep_score()
-    sb.prep_high_score()
-    sb.prep_level()
-    sb.prep_ships()
+    sb.prep_images()
 
     # Empty the list of aliens and bullets
     aliens.empty()
@@ -274,7 +271,7 @@ def update_stars(ai_settings, stars, screen):
     # Update bullet positions
     stars.update()
 
-    # Get rid of bullets that have disappeared.
+    # Get rid of stars that have disappeared.
     for star in stars.copy():
         if star.rect.bottom >= ai_settings.screen_height:
             stars.remove(star)
