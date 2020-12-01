@@ -130,20 +130,12 @@ def update_bullets(ai_settings, screen, stats, sb, ship, aliens, bullets):
     # Check for any bullets that have hit aliens.
     # If so, get rid of the bullet and the alien
     check_bullet_alien_collisions(ai_settings, screen, stats, sb, ship, aliens,
-            bullets)
+        bullets)
 
-def check_bullet_alien_collisions(ai_settings, screen, stats, sb,
-        ship, aliens, bullets):
-    """Respond to bullet-alien collisions"""
-    # Remove any bullets and aliens that have collided
-    collisions = pygame.sprite.groupcollide(bullets, aliens, True, True)
-
-    if collisions:
-        for aliens in collisions.values():
-            stats.score += ai_settings.alien_points * len(aliens)
-            sb.prep_score()
-        check_high_score(stats, sb)
-
+def start_new_level(ai_settings, screen, stats, sb, ship, aliens, bullets):
+    '''Remove remaining bullets, speed up game, create a new fleet of aliens,
+    and increment the level.'''
+    # if True, then the alien fleet has been destroyed
     if len(aliens) == 0:
         # Destroy existing bullets, speed up game, and create new fleet.
         # If the entire fleet is destroyed, start a new level.
@@ -155,6 +147,22 @@ def check_bullet_alien_collisions(ai_settings, screen, stats, sb,
         sb.prep_level()
 
         create_fleet(ai_settings, screen, ship, aliens)
+
+def check_bullet_alien_collisions(ai_settings, screen, stats, sb,
+        ship, aliens, bullets):
+    """Respond to bullet-alien collisions"""
+    # Remove any bullets and aliens that have collided
+    collisions = pygame.sprite.groupcollide(bullets, aliens, True, True)
+
+    if collisions:
+        for aliens in collisions.values():
+            stats.score += ai_settings.alien_points * len(aliens)
+            sb.prep_score()
+        # Check to see if a new high score has been achieved.
+        check_high_score(stats, sb)
+
+    # next level
+    start_new_level(ai_settings, screen, stats, sb, ship, aliens, bullets)
 
 
 def get_number_aliens_x(ai_settings, alien_width):
